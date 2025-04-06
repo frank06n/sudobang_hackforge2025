@@ -29,6 +29,16 @@ const userSchema = new mongoose.Schema({
             type: Date,
         },
     },
+    emergencyContacts: [
+        {
+            name: {
+                type: String,
+            },
+            number: {
+                type: String,
+            },
+        },
+    ],
 }, { versionKey: false });
 
 export default mongoose.model('User', userSchema);
