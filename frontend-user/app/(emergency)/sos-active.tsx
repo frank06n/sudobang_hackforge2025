@@ -137,7 +137,7 @@ export default function SOSActiveScreen() {
                         <Button
                             mode="contained"
                             icon="phone"
-                            onPress={() => router.push('/in-app-messaging')}
+                            onPress={() => router.push('/chat')}
                             style={styles.contactButton}
                         >
                             Contact Paramedic

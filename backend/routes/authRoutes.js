@@ -1,5 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
+import User from '../models/User.js';
 import Ambulance from '../models/Ambulance.js';
 import Hospital from '../models/Hospital.js';
 import { clerkClient, requireAuth, getAuth } from '@clerk/express';
@@ -83,7 +84,7 @@ const createUser = async (req, res) => {
         if (err.code === 11000) {
             res.status(409).json({ error: 'User with this ID/email/number already exists' });
         } else {
-            res.status(500).json({ error: 'Something went wrong', details: err.message });
+            res.status(500).json({ error: 'Something went wrong while creating user', details: err.message });
         }
     }
 };
@@ -118,7 +119,7 @@ const verifyPhone = async (req, res) => {
         });
     } catch (err) {
         console.error('OTP send error:', err.message);
-        res.status(500).json({ error: 'Something went wrong', details: err.message });
+        res.status(500).json({ error: 'Something went wrong while sending OTP/verifying phone', details: err.message });
     }
 };
 
@@ -156,7 +157,7 @@ const checkOtp = async (req, res) => {
         return res.status(200).json({ message: 'Phone number verified successfully' });
 
     } catch (err) {
-        res.status(500).json({ error: 'Something went wrong', details: err.message });
+        res.status(500).json({ error: 'Something went wrong while checking otp', details: err.message });
     }
 
 }
@@ -174,7 +175,7 @@ const getUserProfile = async (req, res) => {
 
         res.status(200).json({ user });
     } catch (err) {
-        res.status(500).json({ error: 'Something went wrong', details: err.message });
+        res.status(500).json({ error: 'Something went wrong while getting user profile', details: err.message });
     }
 };
 

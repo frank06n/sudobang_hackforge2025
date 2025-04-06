@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Bang Bang",
-    "slug": "bang-bang",
-    "scheme": "bang-bang",
+    "name": "ResQNet",
+    "slug": "frontend-user",
+    "scheme": "frontend-user",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
