@@ -105,7 +105,7 @@ const SOSDashboard: React.FC = () => {
 
   const navigateToSOSDashboard = () => {
     // Simply navigate back to this same dashboard page
-    router.replace("/dashboard");
+    router.replace("/sos_details");
   };
 
   const timeSince = (timestamp: number): string => {
