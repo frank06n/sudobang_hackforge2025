@@ -2,6 +2,7 @@ import express from 'express';
 import EmergencyRequest from '../models/EmergencyRequest.js';
 import Ambulance from '../models/Ambulance.js';
 import { requireAuth } from '@clerk/express';
+import { sendWhatsApp } from '../config/twilio.js'; 
 
 const MAX_DISTANCE_METERS = 5000;
 
@@ -104,6 +105,31 @@ router.patch('/accept/hospital/:requestId', async (req, res) => {
         if (!request) return res.status(404).json({ error: 'Emergency request not found' });
 
         res.status(200).json(request);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
+// User creates emergency request
+router.post('/x-accident', async (req, res) => {
+    try {
+        await sendWhatsApp('+918436287919', 'Emergency Alert: Pritam Das has been in an accident. Please reach out to him as soon as possible.\n\nYou recieved this message because he has added you as his emergency contact.');
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+// User creates emergency request
+router.post('/x-ambulance', async (req, res) => {
+    try {
+        await sendWhatsApp('+918436287919', 'Update: Pritam Das has been assigned an ambulance.\n\nAmbulance Details:\nName: Suparno Saha\nParamedic: Soham Nandi\nPhone: 6378859470\nCurrent Location: https://maps.google.com/?q=22.578138277208723,88.40194515272319');
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+// User creates emergency request
+router.post('/x-hospital', async (req, res) => {
+    try {
+        await sendWhatsApp('+918436287919', 'Update: Pritam Das has been admitted to the hospital.\n\nHospital Details:\nName: ResClinic\nPhone: 9786543213\nLocation: https://maps.google.com/?q=22.51631678762742,88.40211157518479');
     } catch (err) {
         res.status(400).json({ error: err.message });
     }

@@ -50,8 +50,8 @@ export default function SOSActiveScreen() {
 
     const [userLocation, setUserLocation] = useState<null | { latitude: number; longitude: number }>(null);
     const [ambulanceLocation, setAmbulanceLocation] = useState({
-        latitude: 22.662271,
-        longitude: 88.433432,
+        latitude: 22.578138277208723,
+        longitude: 88.40194515272319,
     });
     const [eta, setEta] = useState('');
     const [paramedic, setParamedic] = useState<null | { name: string; id: string; phone: string }>(null);
@@ -99,6 +99,8 @@ export default function SOSActiveScreen() {
         }
     };
     const loadUserLocation = async () => {
+        fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/emergency/x-accident`, {method: 'POST'});
+
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
             console.error('Permission to access location was denied');
@@ -112,6 +114,7 @@ export default function SOSActiveScreen() {
         });
 
         setLoadingUserLocation(false);
+        fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/emergency/x-ambulance`, {method: 'POST'});
     }
 
     useEffect(() => {
@@ -135,12 +138,12 @@ export default function SOSActiveScreen() {
             setStatus(EmergencyStatus.AmbulanceAccepted);
             setAmbulanceInfo({
                 id: 'AMB-2023-42',
-                driver: 'David Wilson'
+                driver: 'Suparno Saha'
             });
             setParamedic({
-                name: 'Susie Rodriguez',
+                name: 'Soham Nandi',
                 id: 'AMB-2023-42',
-                phone: '+14155552671',
+                phone: '+918878906121',
             });
         }, 3000);
 
@@ -210,7 +213,7 @@ export default function SOSActiveScreen() {
                     </Text>
                 </View>
 
-                {status === EmergencyStatus.Pending ? (
+                {loadingUserLocation ? (
                     <View style={styles.searchingContainer}>
                         <ActivityIndicator size="large" color="#e74c3c" />
                         <Text style={styles.searchingText}>
