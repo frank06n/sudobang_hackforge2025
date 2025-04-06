@@ -49,14 +49,15 @@ export default function SOSActiveScreen() {
     const [ambulanceInfo, setAmbulanceInfo] = useState<{ id: string, driver: string } | null>(null);
 
     const [userLocation, setUserLocation] = useState<null | { latitude: number; longitude: number }>(null);
-    const [ambulanceLocation, setAmbulanceLocation] = useState({
-        latitude: 22.662271,
-        longitude: 88.433432,
-    });
+    const [ambulanceLocation, setAmbulanceLocation] = useState<null | { latitude: number; longitude: number }>(null);
     const [eta, setEta] = useState('');
     const [paramedic, setParamedic] = useState<null | { name: string; id: string; phone: string }>(null);
     const [routeCoordinates, setRouteCoordinates] = useState<{ latitude: number; longitude: number }[]>([]);
     const [loadingUserLocation, setLoadingUserLocation] = useState(true);
+    
+    const [ambulanceSocketId, setAmbulanceSocketId] = useState<string | null>(null);
+    const {socket, isConnected} = useSocket();
+
 
     const region = useMemo(() => {
         return {
@@ -129,24 +130,71 @@ export default function SOSActiveScreen() {
         createEmergencyRequest([userLocation.longitude, userLocation.latitude]);
     }, [userLocation]);
 
-    // Simulate the process of finding and dispatching an ambulance
+    // // Simulate the process of finding and dispatching an ambulance
+    // useEffect(() => {
+    //     const searchTimer = setTimeout(() => {
+    //         setStatus(EmergencyStatus.AmbulanceAccepted);
+    //         setAmbulanceInfo({
+    //             id: 'AMB-2023-42',
+    //             driver: 'David Wilson'
+    //         });
+    //         setParamedic({
+    //             name: 'Susie Rodriguez',
+    //             id: 'AMB-2023-42',
+    //             phone: '+14155552671',
+    //         });
+    //     }, 3000);
+
+    //     return () => clearTimeout(searchTimer);
+    // }, []);
+
+    // Polling every 5secs to see if ambulance assigned yet
     useEffect(() => {
-        const searchTimer = setTimeout(() => {
-            setStatus(EmergencyStatus.AmbulanceAccepted);
-            setAmbulanceInfo({
-                id: 'AMB-2023-42',
-                driver: 'David Wilson'
-            });
-            setParamedic({
-                name: 'Susie Rodriguez',
-                id: 'AMB-2023-42',
-                phone: '+14155552671',
-            });
-        }, 3000);
+        let interval: NodeJS.Timeout;
 
-        return () => clearTimeout(searchTimer);
-    }, []);
+        // Only start polling if we have an emergencyRequestId and the socket is connected
+        if (emergencyId && isConnected && !ambulanceSocketId) {
+            interval = setInterval(async () => {
+                try {
+                    const token = await getToken();
 
+                    const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/emergency/check-assigned-ambulance`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({ emergencyId }),
+                    });
+                    const data = await response.json();
+
+                    if (data.assigned && data.socketId) {
+                        setAmbulanceSocketId(data.socketId);
+                        setStatus(EmergencyStatus.AmbulanceAccepted);
+
+                        // hardcoding values for now
+                        setAmbulanceInfo({
+                            id: 'AMB-2023-42',
+                            driver: 'David Wilson'
+                        });
+                        setParamedic({
+                            name: 'Susie Rodriguez',
+                            id: 'AMB-2023-42',
+                            phone: '+14155552671',
+                        });
+                        // setAmbulanceLocation({
+                        //     latitude: 22.662271,
+                        //     longitude: 88.433432,
+                        // });
+                    }
+                } catch (error: any) {
+                    console.error('Error polling for ambulance assignment:', error.message);
+                }
+            }, 5000);
+        }
+
+        return () => clearInterval(interval);
+    }, [emergencyId, isConnected, ambulanceSocketId]);
 
     // useEffect to recalculate route on location update
     useEffect(() => {
@@ -154,6 +202,10 @@ export default function SOSActiveScreen() {
             if (loadingUserLocation) return;
             if (!userLocation) {
                 console.error('user location loaded but still null');
+                return;
+            }
+            if (!ambulanceLocation) {
+                console.error('ambulance not located yet');
                 return;
             }
 
@@ -177,19 +229,17 @@ export default function SOSActiveScreen() {
                 console.error("Error fetching route:", error);
             }
         })();
-    }, [ambulanceLocation.latitude, ambulanceLocation.longitude, userLocation?.latitude, userLocation?.longitude]);
-
-    const { socket, isConnected } = useSocket();
+    }, [ambulanceLocation?.latitude, ambulanceLocation?.longitude, userLocation?.latitude, userLocation?.longitude]);
 
     // useEffect for SOCKET LISTEN location updates of ambulance
     useEffect(() => {
-        if (!ambulanceInfo?.id || !isConnected) return;
+        // Once we have the ambulanceSocketId, listen for live updates
+        if (!ambulanceSocketId) return;
 
-        const requestId = ambulanceInfo.id;
-        const channel = `ambulance-location-${requestId}`;
+        const channel = `ambulance-location-${emergencyId}`;
 
         const handleLocationUpdate = (coordinates: { latitude: number; longitude: number }) => {
-            console.log("🚑 Live update received:", coordinates);
+            console.log('Live ambulance update:', coordinates);
             setAmbulanceLocation(coordinates);
         };
 
@@ -198,7 +248,7 @@ export default function SOSActiveScreen() {
         return () => {
             socket.off(channel, handleLocationUpdate);
         };
-    }, [ambulanceInfo?.id, isConnected]);
+    }, [ambulanceSocketId, emergencyId, socket]);
 
     return (
         <View style={styles.container}>
@@ -277,13 +327,13 @@ export default function SOSActiveScreen() {
                             pinColor="blue"
                         />
                     )}
-                    <Marker
+                    {ambulanceLocation && <Marker
                         coordinate={ambulanceLocation}
                         title="Ambulance"
                         description={`ETA: ${eta}`}
                     >
                         <FontAwesome name="ambulance" size={30} color="#E53935" />
-                    </Marker>
+                    </Marker>}
 
                     {routeCoordinates.length > 0 && (
                         <Polyline coordinates={routeCoordinates} strokeWidth={4} strokeColor="red" />
