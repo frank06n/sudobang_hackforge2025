@@ -14,7 +14,7 @@ const Header = () => {
       <div className="w-full h-1 bg-gradient-to-r from-cyan-500 to-purple-600"></div>
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="flex items-center">
-          <Link to="/" className="flex items-center">
+          <Link to="/dashboard" className="flex items-center">
             <Hospital className="text-cyan-500 mr-2" size={24} />
             <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
               ResQNet

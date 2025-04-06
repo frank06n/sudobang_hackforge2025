@@ -179,7 +179,16 @@ const Dashboard = () => {
         {/* Live Emergency Cases */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-semibold">Live Emergency Cases</h3>
+            <div className="flex items-center space-x-2">
+              <h3 className="text-xl font-semibold">Live Emergency Cases</h3>
+              <a 
+                href="/emergencies" 
+                className="text-xs bg-gradient-to-r from-cyan-500 to-purple-600 px-3 py-1 rounded-full text-white transition-colors flex items-center"
+              >
+                View All Emergencies
+              </a>
+            </div>
+
             <div className="flex space-x-2">
               <button className="text-xs bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded-full text-gray-200 transition-colors">
                 All Cases
@@ -256,7 +265,16 @@ const Dashboard = () => {
 
         {/* Resource Management Quick Access */}
         <div>
-          <h3 className="text-xl font-semibold mb-4">Resource Management</h3>
+          <div className="flex items-center space-x-2">
+            <h3 className="text-xl font-semibold">Resource Management</h3>
+            <a 
+              href="/resources" 
+              className="text-xs bg-gradient-to-r from-cyan-500 to-purple-600 px-3 py-1 rounded-full text-white transition-colors flex items-center"
+            >
+              Manage All Resources
+            </a>
+          </div>
+          <div className="h-4"></div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <button className="bg-gray-800 rounded-xl border border-gray-700 p-6 text-center hover:border-cyan-500 transition-all hover:shadow-lg hover:shadow-cyan-900/20">
               <div className="flex justify-center mb-3">
