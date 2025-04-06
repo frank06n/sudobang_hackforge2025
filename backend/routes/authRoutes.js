@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import Ambulance from '../models/Ambulance.js';
 import Hospital from '../models/Hospital.js';
 import { clerkClient, requireAuth, getAuth } from '@clerk/express';
+import { sendWhatsApp } from '../config/twilio.js'; 
 
 const router = express.Router();
 
@@ -87,37 +88,40 @@ const createUser = async (req, res) => {
     }
 };
 
+
+
 const verifyPhone = async (req, res) => {
-    // Use `getAuth()` to get the user's `userId`
     const { userId } = getAuth(req);
-    console.log('request', req);
-    console.log('request body', req.body);
     const { number } = req.body;
+
+    const otpData = createOtpRequest();
 
     try {
         const updatedUser = await User.findByIdAndUpdate(
             userId,
             {
                 number,
-                otpRequest: createOtpRequest(),
+                otpRequest: otpData,
             },
             {
-                new: true,        // return the updated document
-                upsert: true,     // create if it doesn't exist
+                new: true,
+                upsert: true,
                 setDefaultsOnInsert: true,
             }
         );
 
-        // send the otp to the number using Twilio API
+        // Send OTP using Twilio
+        await sendWhatsApp(number, `Your verification code is: ${otpData.otp}`);
 
         res.status(200).json({
-            message: 'User updated or created successfully'
+            message: 'OTP sent successfully',
         });
     } catch (err) {
+        console.error('OTP send error:', err.message);
         res.status(500).json({ error: 'Something went wrong', details: err.message });
     }
-
 };
+
 
 const checkOtp = async (req, res) => {
     // Use `getAuth()` to get the user's `userId`
