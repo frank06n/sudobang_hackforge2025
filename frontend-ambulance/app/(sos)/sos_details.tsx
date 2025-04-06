@@ -11,7 +11,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useRouter } from 'expo-router';
 
@@ -120,7 +120,7 @@ const SOSDetailsScreen: React.FC = () => {
           style: "default",
           onPress: () => {
             console.log("SOS accepted");
-            //router.replace("/navigation");
+            router.push("/navigation");
           }
         }
       ]
@@ -138,7 +138,7 @@ const SOSDetailsScreen: React.FC = () => {
           style: "destructive",
           onPress: () => {
             console.log("SOS declined");
-            router.replace("/dashboard");
+            router.push("/dashboard");
           }
         }
       ]
@@ -231,7 +231,7 @@ const SOSDetailsScreen: React.FC = () => {
             
             {sosDetails.patient.medicalInfo && sosDetails.patient.medicalInfo.length > 0 && (
               <View style={styles.listContainer}>
-                <Text style={styles.infoLabel}>Medical Conditions:</Text>
+                <Text style={[styles.infoLabel, { width: '100%' }]}>Medical Conditions:</Text>
                 {sosDetails.patient.medicalInfo.map((info, index) => (
                   <Text key={`med-${index}`} style={styles.listItem}>• {info}</Text>
                 ))}
@@ -247,6 +247,14 @@ const SOSDetailsScreen: React.FC = () => {
               </View>
             )}
           </View>
+          {/* Add this right after the patient details infoCard closing View tag */}
+          <TouchableOpacity 
+            style={styles.documentsButton}
+            onPress={() => Alert.alert('Medical Documents', 'Medical documents will be displayed here.')}
+          >
+            <MaterialIcons name="description" size={20} color="white" style={styles.buttonIcon} />
+            <Text style={styles.actionButtonText}>View Medical Documents</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Emergency Contacts Section */}
@@ -470,6 +478,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+  documentsButton: {
+    backgroundColor: '#3f51b5',
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 12,
+    width: '92%',
+    alignSelf: 'center',
+  },
+  buttonIcon: {
+    marginRight: 8,
+  },
 });
 
-export default SOSDetailsScreen;``
+export default SOSDetailsScreen;

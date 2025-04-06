@@ -95,17 +95,17 @@ const SOSDashboard: React.FC = () => {
 
   const navigateToSettings = () => {
     // Simply navigate to the settings page
-    router.replace("/settings");
+    router.push("/settings");
   };
 
   const navigateToProfile = () => {
     // Simply navigate to the profile page
-    router.replace("/profile");
+    router.push("/profile");
   };
 
   const navigateToSOSDashboard = () => {
     // Simply navigate back to this same dashboard page
-    router.replace("/sos_details");
+    router.push("/sos_details");
   };
 
   const timeSince = (timestamp: number): string => {
