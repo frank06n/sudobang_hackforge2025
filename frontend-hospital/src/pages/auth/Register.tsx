@@ -347,7 +347,7 @@ const Register = () => {
             <div className="flex space-x-3">
               {step > 1 && (
                 <button 
-                  onClick={() => setStep(step - 1)}
+                  onClick={prevStep}
                   className="flex items-center bg-gray-700 text-gray-200 px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors"
                 >
                   <ChevronLeft className="mr-2" size={18} />
@@ -375,12 +375,12 @@ const Register = () => {
               )}
               
               {step === 4 && (
-                <button 
+                <a href = "/dashboard" 
                   className="flex items-center bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all"
                 >
                   Complete Registration
                   <CheckCircle className="ml-2" size={18} />
-                </button>
+                </a>
               )}
             </div>
           </div>

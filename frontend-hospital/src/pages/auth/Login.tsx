@@ -93,13 +93,13 @@ const Login = () => {
               </div>
             </div>
             
-            <button 
+            <a href = "/dashboard"
               type="submit"
               className="w-full flex items-center justify-center bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-3 rounded-lg hover:shadow-lg transition-all"
             >
               <LogIn className="mr-2" size={18} />
               Sign In
-            </button>
+            </a>
             
             <div className="bg-gray-700/50 rounded-lg p-4 border border-gray-600 mt-6">
               <div className="text-center text-sm text-gray-300">
