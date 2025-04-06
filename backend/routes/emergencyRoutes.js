@@ -128,8 +128,9 @@ router.post('/x-ambulance', async (req, res) => {
 });
 // User creates emergency request
 router.post('/x-hospital', async (req, res) => {
+    console.log('jello');
     try {
-        await sendWhatsApp('+918436287919', 'Update: Pritam Das has been admitted to the hospital.\n\nHospital Details:\nName: ResClinic\nPhone: 9786543213\nLocation: https://maps.google.com/?q=22.51631678762742,88.40211157518479');
+        await sendWhatsApp('+918436287919', 'Update: Pritam Das will be admitted to the hospital.\n\nHospital Details:\nName: ResClinic\nPhone: 9786543213\nLocation: https://maps.google.com/?q=22.51631678762742,88.40211157518479');
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
