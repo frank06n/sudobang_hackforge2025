@@ -129,12 +129,6 @@ const SOSDashboard: React.FC = () => {
       onPress={() => navigateToSOSDashboard()} // Simply route to SOSDashboard page
     >
       <View style={styles.sosContent}>
-        <View style={styles.mapContainer}>
-          <Image 
-            source={{ uri: `https://maps.googleapis.com/maps/api/staticmap?center=${item.location.latitude},${item.location.longitude}&zoom=15&size=100x100&markers=color:red%7C${item.location.latitude},${item.location.longitude}&key=YOUR_API_KEY` }} 
-            style={styles.mapImage}
-          />
-        </View>
         <View style={styles.sosDetails}>
           <Text style={styles.sosAddress} numberOfLines={1}>
             {item.location.address}
