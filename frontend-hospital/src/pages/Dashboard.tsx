@@ -17,6 +17,7 @@ import {
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import EmergencyCasesComponent from '../components/EmergencyCasesComponent';
 
 const Dashboard = () => {
   // Mock data - would be replaced with real API calls
@@ -177,91 +178,7 @@ const Dashboard = () => {
         </div>
 
         {/* Live Emergency Cases */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center space-x-2">
-              <h3 className="text-xl font-semibold">Live Emergency Cases</h3>
-              <a 
-                href="/emergencies" 
-                className="text-xs bg-gradient-to-r from-cyan-500 to-purple-600 px-3 py-1 rounded-full text-white transition-colors flex items-center"
-              >
-                View All Emergencies
-              </a>
-            </div>
-
-            <div className="flex space-x-2">
-              <button className="text-xs bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded-full text-gray-200 transition-colors">
-                All Cases
-              </button>
-              <button className="text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-full text-gray-400 transition-colors">
-                Incoming
-              </button>
-              <button className="text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-full text-gray-400 transition-colors">
-                In Treatment
-              </button>
-            </div>
-          </div>
-
-          {emergencyCases.length > 0 ? (
-            <div className="space-y-4">
-              {emergencyCases.map(emergency => (
-                <div 
-                  key={emergency.id}
-                  className="bg-gray-800 rounded-xl border border-gray-700 p-4 shadow-lg hover:border-gray-600 transition-colors"
-                >
-                  <div className="flex items-start">
-                    <div className={`w-3 h-3 ${getPriorityColor(emergency.priority)} rounded-full mt-2 mr-3`}></div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <h4 className="font-medium">{emergency.patientName}</h4>
-                          <p className="text-sm text-gray-400">{emergency.id}</p>
-                        </div>
-                        <div className="bg-gray-700 rounded-lg px-3 py-1 text-sm flex items-center">
-                          <Clock size={14} className="mr-1 text-cyan-500" />
-                          <span>ETA: {emergency.eta}</span>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm mb-3">
-                        <div>
-                          <p className="text-gray-400">Condition</p>
-                          <p>{emergency.condition}</p>
-                        </div>
-                        <div>
-                          <p className="text-gray-400">Paramedic</p>
-                          <p>{emergency.paramedic}</p>
-                        </div>
-                      </div>
-                      <div className="text-sm bg-gray-700/50 rounded-lg p-3 border border-gray-600">
-                        <p className="text-gray-300">{emergency.notes}</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-end mt-3 space-x-2">
-                    <button className="text-xs bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded-full text-cyan-400 transition-colors flex items-center">
-                      <FileText size={12} className="mr-1" />
-                      View Details
-                    </button>
-                    <button className="text-xs bg-gradient-to-r from-cyan-500 to-purple-600 px-3 py-1 rounded-full text-white transition-colors flex items-center">
-                      <Bed size={12} className="mr-1" />
-                      Prepare Room
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="bg-gray-800 rounded-xl border border-gray-700 p-8 text-center shadow-lg">
-              <div className="flex justify-center mb-4">
-                <div className="p-3 bg-gray-700/50 rounded-full">
-                  <Bell className="text-gray-500" size={24} />
-                </div>
-              </div>
-              <h4 className="text-lg font-medium text-gray-300">No Active Emergency Cases</h4>
-              <p className="text-gray-400 mt-1">All current cases have been processed</p>
-            </div>
-          )}
-        </div>
+        <EmergencyCasesComponent />
 
         {/* Resource Management Quick Access */}
         <div>
