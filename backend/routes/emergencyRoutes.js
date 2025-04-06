@@ -1,7 +1,11 @@
+// emergencyRoutes.js
 import express from 'express';
 import EmergencyRequest from '../models/EmergencyRequest.js';
 import Ambulance from '../models/Ambulance.js';
+import Hospital from '../models/Hospital.js';
+import User from '../models/User.js';
 import { requireAuth } from '@clerk/express';
+import { notifyEmergencyContacts } from '../config/twilio.js';
 
 const MAX_DISTANCE_METERS = 5000;
 
@@ -20,6 +24,14 @@ router.post('/request', requireAuth({ signInUrl: '/sign-in' }), async (req, res)
         });
 
         console.log('new request', newRequest);
+
+        // Notify emergency contacts via Twilio WhatsApp
+        const user = await User.findById(userId);
+        if (user && user.emergencyContacts.length > 0) {
+            await notifyEmergencyContacts(user.emergencyContacts, `🚨 ${user.name} is in danger!
+Last Known Location: ${coordinates.join(', ')}`);
+        }
+
         try {
             // Notify nearby ambulances
             const nearbyAmbulances = await Ambulance.find({
@@ -33,7 +45,7 @@ router.post('/request', requireAuth({ signInUrl: '/sign-in' }), async (req, res)
                 socketId: { $ne: null },
             });
             console.log('nearby ambulances', nearbyAmbulances);
-    
+
             nearbyAmbulances.forEach((ambulance) => {
                 req.io.to(ambulance.socketId).emit('new-emergency', newRequest);
             });
@@ -48,8 +60,7 @@ router.post('/request', requireAuth({ signInUrl: '/sign-in' }), async (req, res)
     }
 });
 
-
-// 🚑 Ambulance accepts request - Use PATCH instead of POST
+// 🚑 Ambulance accepts request
 router.patch('/accept/ambulance/:requestId', async (req, res) => {
     try {
         const { requestId } = req.params;
@@ -73,13 +84,23 @@ router.patch('/accept/ambulance/:requestId', async (req, res) => {
 
         if (!request) return res.status(404).json({ error: 'Emergency request not found' });
 
+        // Notify emergency contacts
+        const user = await User.findById(request.userId);
+        const ambulance = await Ambulance.findById(ambulanceId);
+        if (user && user.emergencyContacts.length > 0 && ambulance) {
+            await notifyEmergencyContacts(
+                user.emergencyContacts,
+                `🚑 Ambulance Assigned for ${user.name}\nAmbulance ID: ${ambulance._id}\nDriver: ${ambulance.name}\nContact: ${ambulance.phoneNumber}`
+            );
+        }
+
         res.status(200).json(request);
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
 });
 
-// 🏥 Hospital accepts request - Use PATCH instead of POST
+// 🏥 Hospital accepts request
 router.patch('/accept/hospital/:requestId', async (req, res) => {
     try {
         const { requestId } = req.params;
@@ -102,6 +123,15 @@ router.patch('/accept/hospital/:requestId', async (req, res) => {
         );
 
         if (!request) return res.status(404).json({ error: 'Emergency request not found' });
+        // Notify emergency contacts
+        const user = await User.findById(request.userId);
+        const hospital = await Hospital.findById(hospitalId);
+        if (user && user.emergencyContacts.length > 0 && hospital) {
+            await notifyEmergencyContacts(
+                user.emergencyContacts,
+                `🏥 Hospital Assigned for ${user.name}\nHospital Name: ${hospital.name}\nContact: ${hospital.phoneNumber || 'N/A'}`
+            );
+        }
 
         res.status(200).json(request);
     } catch (err) {
@@ -141,6 +171,5 @@ router.post('/check-assigned-ambulance', requireAuth({ signInUrl: '/sign-in' }),
         res.status(500).json({ message: err.message });
     }
 });
-
 
 export default router;
