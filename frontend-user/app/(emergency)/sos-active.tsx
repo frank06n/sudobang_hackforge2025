@@ -20,8 +20,8 @@ export default function SOSActiveScreen() {
 
     const [userLocation, setUserLocation] = useState<null | { latitude: number; longitude: number }>(null);
     const [ambulanceLocation, setAmbulanceLocation] = useState({
-        latitude: 22.662271,
-        longitude: 88.433432,
+        latitude: 22.578138277208723,
+        longitude: 88.40194515272319,
     });
     const [eta, setEta] = useState('');
     const [paramedic, setParamedic] = useState<null | { name: string; id: string; phone: string }>(null);

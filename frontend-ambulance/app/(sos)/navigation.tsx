@@ -18,14 +18,14 @@ import { useRouter } from 'expo-router';
 // Mock data for the route
 const mockRoute = {
   destination: {
-    latitude: 37.7858,
-    longitude: -122.4064,
+    latitude: 22.560706299670564,
+    longitude: 88.41350824577506,
     address: '825 Battery St, San Francisco, CA 94111',
   },
   // Mock user's current position
   origin: {
-    latitude: 37.7694,
-    longitude: -122.4862,
+    latitude: 22.578138277208723,
+    longitude: 88.40194515272319,
     address: 'Current Location',
   },
   // Simplified route coordinates
@@ -46,31 +46,26 @@ const mockRoute = {
 const mockSOSDetails = {
   id: '123456',
   patient: {
-    name: 'Robert Chen',
-    age: 42,
+    name: 'Pritam Das',
+    age: 19,
     gender: 'Male',
     bloodType: 'O+',
     medicalInfo: ['Diabetes Type 2', 'Hypertension'],
     allergies: ['Penicillin', 'Shellfish'],
     emergencyContacts: [
       {
-        name: 'Sarah Chen',
-        relation: 'Spouse',
-        phone: '(555) 123-4567',
-      },
-      {
-        name: 'Dr. James Wilson',
-        relation: 'Primary Care Physician',
-        phone: '(555) 987-6543',
+        name: 'Sagnik Goswami',
+        relation: 'Husband',
+        phone: '84362 87919',
       },
     ],
   },
   accident: {
     time: Date.now() - 1000 * 60 * 10, // 10 minutes ago
     location: {
-      latitude: 37.7858,
-      longitude: -122.4064,
-      address: '825 Battery St, San Francisco, CA 94111',
+      latitude: 22.560706299670564,
+      longitude: 88.41350824577506,
+      address: 'Bidhannagar, Kolkata, West Bengal',
     },
   },
 };

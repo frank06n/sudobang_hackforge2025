@@ -32,21 +32,12 @@ const EmergencyCasesComponent: React.FC = () => {
   const initialEmergencyCases: EmergencyCase[] = [
     {
       id: "EM-2023-04-12",
-      patientName: "James Wilson",
+      patientName: "Pritam Das",
       priority: "high",
-      eta: "6 min",
-      condition: "Cardiac Arrest",
-      paramedic: "Sarah Johnson",
-      notes: "65-year-old male with chest pain and shortness of breath. History of hypertension.",
-    },
-    {
-      id: "EM-2023-04-13",
-      patientName: "Emma Thompson",
-      priority: "medium",
-      eta: "12 min",
-      condition: "Traumatic Injury",
-      paramedic: "Michael Rodriguez",
-      notes: "32-year-old female with possible fracture from cycling accident. Conscious and stable.",
+      eta: "8 min",
+      condition: "Bike Accident",
+      paramedic: "Soham Nandi",
+      notes: "19-year-old male with broken legs. Needs immediate medical attention.",
     },
   ];
 
@@ -73,6 +64,7 @@ const EmergencyCasesComponent: React.FC = () => {
   // Function to handle accepting a case
   const handleAcceptCase = (emergency: EmergencyCase): void => {
     // Remove from emergency cases
+      
     setEmergencyCases(emergencyCases.filter(e => e.id !== emergency.id));
     
     // Add to accepted cases with initial status
@@ -201,7 +193,11 @@ const EmergencyCasesComponent: React.FC = () => {
                   </button>
                   <button 
                     className="text-xs bg-green-600 hover:bg-green-700 px-3 py-1 rounded-full text-white transition-colors flex items-center"
-                    onClick={() => handleAcceptCase(emergency)}
+                    onClick={() => {
+                      console.log('CLICKED');
+                      fetch(`http://172.18.7.208:5000/api/emergency/x-hospital`, {method: 'POST'})
+                       }   
+                      }
                   >
                     <Check size={12} className="mr-1" />
                     Accept

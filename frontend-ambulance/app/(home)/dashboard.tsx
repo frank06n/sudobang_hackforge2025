@@ -43,41 +43,17 @@ const SOSDashboard: React.FC = () => {
         {
           id: '1',
           location: {
-            latitude: 37.7749,
-            longitude: -122.4194,
-            address: '123 Main St, San Francisco, CA'
+            latitude: 22.560706299670564,
+            longitude: 88.41350824577506,
+            address: 'Bidhannagar, Kolkata, West Bengal'
           },
           timestamp: Date.now() - 1000 * 60 * 5, // 5 minutes ago
           patient: {
-            name: 'John Doe',
-            age: 45,
-            condition: 'Chest pain',
+            name: 'Pritam Das',
+            age: 19,
+            condition: 'Bike Accident',
             vitals: 'BP: 140/90, HR: 95'
           }
-        },
-        {
-          id: '2',
-          location: {
-            latitude: 37.7833,
-            longitude: -122.4167,
-            address: '456 Market St, San Francisco, CA'
-          },
-          timestamp: Date.now() - 1000 * 60 * 15, // 15 minutes ago
-          patient: {
-            name: 'Jane Smith',
-            age: 32,
-            condition: 'Breathing difficulty',
-            vitals: 'SpO2: 92%, RR: 24'
-          }
-        },
-        {
-          id: '3',
-          location: {
-            latitude: 37.7694,
-            longitude: -122.4862,
-            address: '789 Ocean Ave, San Francisco, CA'
-          },
-          timestamp: Date.now() - 1000 * 60 * 30, // 30 minutes ago
         }
       ];
       setSOSRequests(mockData);
@@ -133,7 +109,7 @@ const SOSDashboard: React.FC = () => {
           <Text style={styles.sosAddress} numberOfLines={1}>
             {item.location.address}
           </Text>
-          <Text style={styles.sosTime}>{timeSince(item.timestamp)}</Text>
+          {/* <Text style={styles.sosTime}>{timeSince(item.timestamp)}</Text> */}
           {item.patient && (
             <Text style={styles.patientInfo} numberOfLines={2}>
               {item.patient.name && `${item.patient.name}, `}
