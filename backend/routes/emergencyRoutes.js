@@ -109,4 +109,38 @@ router.patch('/accept/hospital/:requestId', async (req, res) => {
     }
 });
 
+// Assume you have imported Express, the EmergencyRequest model, and the Ambulance model
+router.post('/check-assigned-ambulance', requireAuth({ signInUrl: '/sign-in' }), async (req, res) => {
+    try {
+        const { emergencyRequestId } = req.body;
+        if (!emergencyRequestId) {
+            return res.status(400).json({ message: 'Emergency request ID is required' });
+        }
+
+        // Find the emergency request by its ID
+        const emergencyRequest = await EmergencyRequest.findById(emergencyRequestId);
+        if (!emergencyRequest) {
+            return res.status(404).json({ message: 'Emergency request not found' });
+        }
+
+        // Check if an ambulance has been assigned
+        if (!emergencyRequest.ambulanceId) {
+            return res.status(200).json({ assigned: false });
+        }
+
+        // Find the assigned ambulance to get its socketId
+        const ambulance = await Ambulance.findById(emergencyRequest.ambulanceId);
+        if (!ambulance) {
+            return res.status(404).json({ message: 'Ambulance not found' });
+        }
+
+        // Return the socketId so the client can subscribe to its live updates
+        return res.status(200).json({ assigned: true, socketId: ambulance.socketId });
+    } catch (err) {
+        console.error("Error checking assigned ambulance:", err.message);
+        res.status(500).json({ message: err.message });
+    }
+});
+
+
 export default router;
