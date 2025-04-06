@@ -31,7 +31,7 @@ function App() {
               <a href="#how-it-works" className="text-gray-300 hover:text-cyan-400 transition-colors">How It Works</a>
               <a href="#contact" className="text-gray-300 hover:text-cyan-400 transition-colors">Contact</a>
             </nav>
-            <button className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold px-6 py-2 rounded-lg hover:shadow-lg transition-all">Login</button>
+            <a href="/login" className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold px-6 py-2 rounded-lg hover:shadow-lg transition-all">Login</a>
           </div>
           
           <button 
@@ -45,7 +45,7 @@ function App() {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 bg-gray-800 shadow-lg py-4 px-4 space-y-4 border-t border-gray-700">
-            <a href="#" className="block py-2 hover:text-cyan-400">Home</a>
+            <a href="/" className="block py-2 hover:text-cyan-400">Home</a>
             <a href="#features" className="block py-2 hover:text-cyan-400">Features</a>
             <a href="#how-it-works" className="block py-2 hover:text-cyan-400">How It Works</a>
             <a href="#contact" className="block py-2 hover:text-cyan-400">Contact</a>
@@ -77,10 +77,10 @@ function App() {
                   <Download className="mr-2 h-5 w-5" />
                   Download the App
                 </button>
-                <button className="bg-gray-800 text-gray-100 border border-gray-700 font-semibold px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center">
+                <a href= "/login" className="bg-gray-800 text-gray-100 border border-gray-700 font-semibold px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center">
                   Hospital Dashboard Login
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </button>
+                </a>
               </div>
             </div>
             
@@ -298,9 +298,9 @@ function App() {
                 <button className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold px-8 py-3 rounded-lg hover:shadow-xl transition-all">
                   Request a Demo
                 </button>
-                <button className="bg-gray-700 text-gray-100 font-semibold px-8 py-3 rounded-lg hover:shadow-lg transition-all border border-gray-600">
+                <a href = "/login" className="bg-gray-700 text-gray-100 font-semibold px-8 py-3 rounded-lg hover:shadow-lg transition-all border border-gray-600">
                   Hospital Login
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -355,9 +355,9 @@ function App() {
           <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-500 text-sm">© 2025 ResQNet. All rights reserved.</p>
             <div className="mt-4 md:mt-0">
-              <button className="bg-cyan-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-cyan-700 transition-colors">
+              <a href = "/login" className="bg-cyan-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-cyan-700 transition-colors">
                 Hospital Login
-              </button>
+              </a>
             </div>
           </div>
         </div>
