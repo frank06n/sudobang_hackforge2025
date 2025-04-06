@@ -114,7 +114,6 @@ export default function SOSActiveScreen() {
         });
 
         setLoadingUserLocation(false);
-        fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/emergency/x-ambulance`, {method: 'POST'});
     }
 
     useEffect(() => {
